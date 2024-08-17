@@ -3,6 +3,7 @@ import {featuredItems, programs} from "@/constants";
 import men from '@/assets/men.png'
 import {Card} from "@/components/ui/card.tsx";
 import {FaArrowRightLong} from "react-icons/fa6";
+import {Link} from "react-router-dom";
 
 const Home = () => {
   return (
@@ -13,8 +14,9 @@ const Home = () => {
           <p className='text-muted-foreground'>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim esse eum ipsam omnis porro quam qui quidem repudiandae sequi velit.
           </p>
-          <Button className='w-fit mt-6 font-bold h-12'>Join club now</Button>
-
+          <Link to='/auth'>
+            <Button className='w-fit mt-6 font-bold h-12'>Join club now</Button>
+          </Link>
           <div className='mt-24'>
             <p className='text-muted-foreground'>AS FEATURED IN</p>
             <div className='flex items-center gap-4 mt-2'>
