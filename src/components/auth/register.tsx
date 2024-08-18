@@ -4,12 +4,23 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import { registerSchema} from "@/lib/validation.ts";
+import {registerSchema} from "@/lib/validation.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form.tsx";
+import {useState} from "react";
+import {createUserWithEmailAndPassword} from 'firebase/auth'
+import {auth} from "@/firebase";
+import {useNavigate} from "react-router-dom";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
+import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
+import FillLoading from "@/components/shared/fill-loading.tsx";
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+
   const {setAuth} = useAuthState()
+  const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -18,10 +29,21 @@ const Register = () => {
 
   const onSubmit = async (values:z.infer<typeof registerSchema>)=>{
     const {email, password} = values
+    setIsLoading(true)
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password)
+      navigate('/')
+    }catch (error){
+      const result = error as Error
+      setError(result.message )
+    }finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div className='flex flex-col'>
+      {isLoading && <FillLoading/>}
       <h2 className='text-xl font-bold'>Register</h2>
       <p className='text-foreground'>
         Already have an account{' '}
@@ -30,6 +52,15 @@ const Register = () => {
         </span>
       </p>
       <Separator className='my-3'/>
+      {error && (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            {error}
+          </AlertDescription>
+        </Alert>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           <FormField
@@ -39,7 +70,7 @@ const Register = () => {
               <FormItem>
                 <FormLabel>Email address</FormLabel>
                 <FormControl>
-                  <Input placeholder="example@gmail.com" {...field} />
+                  <Input placeholder="example@gmail.com" disabled={isLoading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -53,7 +84,7 @@ const Register = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" type={'password'} {...field} />
+                    <Input placeholder="******" type={'password'} disabled={isLoading} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,7 +97,7 @@ const Register = () => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" type={'password'} {...field} />
+                    <Input placeholder="******" type={'password'} disabled={isLoading} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
