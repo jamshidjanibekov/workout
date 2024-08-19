@@ -9,8 +9,6 @@ import FillLoading from "@/components/shared/fill-loading.tsx";
 import {GoogleAuthProvider} from 'firebase/auth'
 import {GithubAuthProvider} from 'firebase/auth'
 
-
-
 const Social = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
