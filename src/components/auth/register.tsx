@@ -14,12 +14,14 @@ import {useNavigate} from "react-router-dom";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
 import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
 import FillLoading from "@/components/shared/fill-loading.tsx";
+import {useUserState} from "@/stores/user.store.ts";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
   const {setAuth} = useAuthState()
+  const {setUser} = useUserState()
   const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -32,6 +34,7 @@ const Register = () => {
     setIsLoading(true)
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password)
+      setUser(res.user)
       navigate('/')
     }catch (error){
       const result = error as Error
