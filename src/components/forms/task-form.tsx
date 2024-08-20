@@ -6,8 +6,6 @@ import {Form, FormControl, FormField, FormItem,  FormMessage} from "@/components
 import {Input} from "@/components/ui/input.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import {addDoc, collection} from 'firebase/firestore'
-import {db} from "@/firebase";
 import {useUserState} from "@/stores/user.store.ts";
 import {toast} from "sonner";
 import FillLoading from "@/components/shared/fill-loading.tsx";
@@ -19,7 +17,7 @@ interface Props{
   handler:(values:z.infer<typeof  taskSchema>) => Promise<void>
 }
 
-const TaskForm = ({ title ='', handler}: Props) => {
+const TaskForm = ({ title ='', handler, isEdit, onClose}: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const {user} = useUserState()
@@ -56,7 +54,10 @@ const TaskForm = ({ title ='', handler}: Props) => {
             </FormItem>
           )}
         />
-        <div className='flex justify-end'>
+        <div className='flex justify-end gap-2'>
+          {isEdit && (
+          <Button type={'button'} disabled={isLoading} variant={'destructive'} onClick={onClose}>Cancel</Button>
+          )}
           <Button type={'submit'} disabled={isLoading}>Submit</Button>
         </div>
       </form>
