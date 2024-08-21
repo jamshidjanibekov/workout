@@ -107,6 +107,7 @@ const Dashboard = () => {
                       task={task}
                       onStartEditing={() => onStartEditing(task)}
                       onDelete={() => onDelete(task.id)}
+                      refetch={refetch}
                     />
                   ))}
                   {isEditing && (
