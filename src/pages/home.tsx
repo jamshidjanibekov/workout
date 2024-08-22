@@ -54,15 +54,15 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <img src={men} alt="image" className='w-1/4 mt-10'/>
+        <img src={men} className='w-1/4 mt-10' alt={'image'}/>
       </div>
       <div className='container max-w-5xl mx-auto'>
         <h1 className='text-4xl '>Not sure where to start?</h1>
         <p className='mt-2 text-muted-foreground'> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci deserunt expedita maxime obcaecati omnis quibusdam.</p>
         <div className='grid grid-cols-3 gap-4 my-8 '>
           {programs.map(item =>(
-            <Card key={item} className='p-8 relative cursor-pointer group'>
-              <h3 >{item.title}</h3>
+            <Card  className='p-8 relative cursor-pointer group'>
+              <h3>{item.title}</h3>
               <p className='text-sm text-muted-foreground mt-2'>{item.descr}</p>
               <Button
                 size='icon'
